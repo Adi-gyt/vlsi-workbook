@@ -265,7 +265,7 @@ abc -liberty /address/to/your/sky130/file/sky130_fd_sc_hd__tt_025C_1v80.lib
 ```bash
 show
 ```
-![Netlist](snapshot/netlist.png)
+![Netlist](snapshots/netlist.png)
 
 ---
 
