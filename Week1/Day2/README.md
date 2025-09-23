@@ -274,7 +274,7 @@ module dff_asyncset(input clk, input async_set, input d, output reg q);
 endmodule
 ```
 📷 Asynchronous Set DFF synthesized in Yosys:
-![Asynchronous Set DFF Netlist](screenshots/asyncset_sim.png)
+![Asynchronous Set DFF Netlist](screenshots/asyncset_sym.png)
 Set works immediately, regardless of clock.
 
 ---
