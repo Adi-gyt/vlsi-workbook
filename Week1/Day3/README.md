@@ -1,41 +1,5 @@
 # Day 3 — Introduction to Logic Optimization
 
-## Table of contents
-
-1. [Logic in Digital Circuits](#logic-in-digital-circuits)
-2. [Combinational Logic Optimization](#combinational-logic-optimization)
-
-   * Constant Propagation
-   * Boolean Logic Optimization
-   * Boolean Logic Optimization Example
-3. [Sequential Logic Optimization](#sequential-logic-optimization)
-
-   * Basic Sequential Optimization
-   * Advanced Sequential Optimization
-
-     * State Optimization
-     * Retiming
-     * Sequential Logic Cloning (Floorplan-Aware Synthesis)
-   * Sequential Constant Optimization (examples)
-4. [Sequential optimizations for unused outputs (`counter_opt`)](#sequential-optimizations-for-unused-outputs-counter_opt)
-
-   * Original counter_opt (unused higher bits dropped)
-   * Modified counter_opt2 (all bits used, 3 flops kept)
-   * Yosys flow & expected results
-   * Simulation notes
-   * Takeaways / best practices
-5. [Lab 6 — `opt_check` (Logic optimization with Yosys)](#lab-6-—-opt_check-logic-optimization-with-yosys)
-
-   * Corrected Verilog sources
-   * What the expressions simplify to
-   * Yosys flow used in lab
-   * Results from the lab
-6. [DFF constant examples (dff_const1..5)](#dff-constant-examples-dff_const15)
-
-   * Discussion, waveforms, synthesis behavior
-
----
-
 ## Logic in Digital Circuits
 
 In digital design, logic can be broadly categorized into two types:
