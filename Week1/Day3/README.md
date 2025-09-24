@@ -1,10 +1,5 @@
 # Day 3 — Introduction to Logic Optimization
 
-> Clean notes from the lab, formatted as a student-friendly `README.md`.
-> I kept your original wording and ASCII art unchanged where present, added Markdown structure, code blocks, and screenshot placeholders so you can drop in images/screenshots easily.
-
----
-
 ## Table of contents
 
 1. [Logic in Digital Circuits](#logic-in-digital-circuits)
@@ -22,17 +17,22 @@
      * Retiming
      * Sequential Logic Cloning (Floorplan-Aware Synthesis)
    * Sequential Constant Optimization (examples)
-4. [Lab 6 — `opt_check` (Logic optimization with Yosys)](#lab-6-—-opt_check-logic-optimization-with-yosys)
+4. [Sequential optimizations for unused outputs (`counter_opt`)](#sequential-optimizations-for-unused-outputs-counter_opt)
+
+   * Original counter_opt (unused higher bits dropped)
+   * Modified counter_opt2 (all bits used, 3 flops kept)
+   * Yosys flow & expected results
+   * Simulation notes
+   * Takeaways / best practices
+5. [Lab 6 — `opt_check` (Logic optimization with Yosys)](#lab-6-—-opt_check-logic-optimization-with-yosys)
 
    * Corrected Verilog sources
    * What the expressions simplify to
    * Yosys flow used in lab
    * Results from the lab
-5. [DFF constant examples (dff\_const1..5)](#dff-constant-examples-dff_const15)
+6. [DFF constant examples (dff_const1..5)](#dff-constant-examples-dff_const15)
 
    * Discussion, waveforms, synthesis behavior
-6. [How to reproduce (commands & testbench)](#how-to-reproduce-commands--testbench)
-7. [TL;DR / Practical takeaways](#tldr--practical-takeaways)
 
 ---
 
@@ -859,9 +859,6 @@ The internal sequence for `count` still conceptually follows 0..7, but since hig
 ---
 ![counter_opt synthesis result](images/counteropt2.png)
 ![counter_opt2 synthesis result](images/counteropt.png)
-```
-
----
 
 
 On Day 3, I learned how logic optimizations — both combinational and sequential — are applied in digital design to make circuits smaller, faster, and more power-efficient without changing their functional behavior.
