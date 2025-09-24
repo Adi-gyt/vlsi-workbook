@@ -538,7 +538,7 @@ Good practice: write out the cleaned/optimized netlist so you can inspect or use
 * `opt_check4.v` → simplifies to a **3-input AND** (`a & b & c`).
 ![opt_check4 Netlist](images/opch4.png)
 For multiplemodulesopt (a multi-module design): flatten the design before `opt_clean -purge` if you want cross-module optimizations:
-
+![multiplemodulesopt Netlist](images/mulmodopt.png)
 ```yosys
 read_verilog multiplemodulesopt.v
 flatten
@@ -768,6 +768,102 @@ So `q` is `0` during reset and remains `0` for the first clock, then becomes `1`
 ![dff_const5 Waveform](images/dffconst5_vcd.png)
 ![dff_const5 Waveform](images/dffconst5_synth.png)
 ---
+
+Perfect 👍 — this is exactly the kind of section that belongs in your **Day 3 README**.
+Here’s how I would fold your cleaned-up `counter_opt` / unused-output optimization chunk into the structured README we built earlier.
+
+I’ll keep formatting consistent, add it in the correct order (under *Sequential optimizations for unused outputs*), and preserve your explanations, code, waveforms, and Yosys flow.
+
+---
+
+## Sequential optimizations for unused outputs
+
+### Unused-Output Optimization (`counter_opt`)
+
+**Concept:**
+Synthesis tools remove or avoid implementing logic that is not observable at the outputs. If internal state bits are never used (read) by the design’s outputs or by other logic that matters, the tool may avoid instantiating hardware for them.
+
+---
+
+#### `counter_opt.v` — original (cleaned)
+
+```verilog
+module counter_opt (
+    input        clk,
+    input        reset,
+    output       q
+);
+    reg [2:0] count;
+
+    assign q = count[0];
+
+    always @(posedge clk or posedge reset) begin
+        if (reset)
+            count <= 3'b000;
+        else
+            count <= count + 1;
+    end
+endmodule
+```
+
+**Behavior (functional):**
+This is a 3-bit up-counter: `0,1,2,3,4,5,6,7,0,...`. The module only **exposes** `count[0]` as the output `q`. That LSB toggles every clock.
+
+**Why synthesis can drop flops:**
+Because only `count[0]` is used externally, the synthesizer can implement *only the logic necessary to produce `q`*. It does not need to implement the other two counter bits if they are not observed or used.
+
+For `count[0]`, its next value is simply the inverse of the current `count[0]`. The tool usually implements `count[0]` as a single D-FF with `D = ~Q` (or a T-FF equivalent), and removes the other two flip-flops completely.
+
+![counter_opt synthesis result](images/counteropt_synth.png)
+
+**Net effect:** far smaller area and simpler logic, since unused state is optimized away.
+
+---
+
+#### Modified RTL that *uses* all bits
+
+```verilog
+module counter_opt2 (
+    input        clk,
+    input        reset,
+    output       q
+);
+    reg [2:0] count;
+
+    // new: q is true only when count == 3'b000
+    assign q = (count == 3'b000);
+
+    always @(posedge clk or posedge reset) begin
+        if (reset)
+            count <= 3'b000;
+        else
+            count <= count + 1;
+    end
+endmodule
+```
+
+**Why synthesis now keeps 3 flops:**
+The expression `count == 3'b000` reads all three bits. The synthesizer must implement the full 3-bit counter so that `q` will be `1` only at the correct times. Therefore the three flip-flops are retained and a small comparator (equality to zero) is generated to produce `q`.
+![counter_opt2 synthesis](images/counteropt2_synth.png)
+---
+
+**What to look for in the `show` output:**
+
+* **`counter_opt` (original):** one D-FF (for `count[0]`) and a feedback inverter (D = \~Q). No adder or other flops.
+* **`counter_opt2` (modified):** three D-FFs (full counter) and comparator logic for `count == 0`.
+
+---
+
+The internal sequence for `count` still conceptually follows 0..7, but since higher bits are unused externally they may not be implemented in the final netlist.
+
+---
+![counter_opt synthesis result](images/counteropt2.png)
+![counter_opt2 synthesis result](images/counteropt.png)
+```
+
+---
+
+
 On Day 3, I learned how logic optimizations — both combinational and sequential — are applied in digital design to make circuits smaller, faster, and more power-efficient without changing their functional behavior.
 
 Combinational optimizations such as constant propagation and Boolean simplification reduce gate count and transistor usage by exploiting algebraic properties and known constants. These techniques shorten critical paths and minimize area/power, and are automatically handled by synthesis tools like Yosys.
