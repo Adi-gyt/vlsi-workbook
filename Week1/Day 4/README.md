@@ -282,11 +282,6 @@ See [Example 2](#example-2-blocking-caveat-in-combinational-logic).
 
   * Ternary MUX → Correct (baseline).
   * Bad MUX, Blocking Caveats → Incorrect, cause mismatches.
-
-```markdown
-![Day 4 Summary Screenshot](images/day4_summary.png)  
-```
-
----
+--
 
 ✅ **Day 4 Takeaway**: GLS is the *bridge* between RTL and real hardware. Correct Verilog style (proper sensitivity lists, correct assignment usage) ensures consistency across RTL, synthesis, GLS, and silicon.
