@@ -32,20 +32,10 @@ Each `weekN/dayM` directory is self-contained and includes:
 
 ### **Day 1 — RTL Simulation and Synthesis Introduction**
 
-* **Design**: 2:1 multiplexer (`rtl/good_mux.v`)
-* **Testbench**: stimulus generation + VCD dump (`tb/tb_good_mux.v`)
-* **Simulation**: compiled and executed with `iverilog`, waveform inspected in GTKWave
-* **Synthesis**: basic Yosys run on the RTL
-* **Proof of authorship**: terminal and waveform snapshots included in `snapshots/`
-
-**Key Outputs:**
-
-* `rtl/good_mux.v`
-* `tb/tb_good_mux.v`
-* `sim/tb_good_mux.vcd`
-* `sim/sim_log.txt`
-* `yosys_run.log`
-* `snapshots/snap_Adi_gyt_<timestamp>.png`
+* Designed a 2:1 multiplexer in Verilog and created a testbench.
+* Simulated with Icarus Verilog and inspected waveforms in GTKWave.
+* Performed a basic Yosys synthesis run on the RTL.
+* Documented outputs and included proof-of-authorship snapshots.
 
 ---
 
