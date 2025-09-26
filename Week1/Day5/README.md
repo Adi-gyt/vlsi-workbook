@@ -109,13 +109,13 @@ end
 endmodule
 ```
 ### Incomplete If-Else Waveform
-![Incomplete If-Else Waveform](incompif2wave.png)
+![Incomplete If-Else Waveform](images/incompif2wave.png)
 ### Incomplete If-Else Synthesis Stats
-![Incomplete If-Else Synthesis Stats](incompifsynth.png)
+![Incomplete If-Else Synthesis Stats](images/incompifsynth.png)
 
 ### Lab 2: Synthesis Result of Lab 1
 ### Incomplete If-Else Netlist
-![Incomplete If-Else Netlist](incompifnet.png)
+![Incomplete If-Else Netlist](images/incompifnet.png)
 
 * Yosys shows a **D-latch** with `i0` as enable.
 
@@ -134,12 +134,12 @@ end
 endmodule
 ```
 ### Incomplete If-Else (2nd Version) Synthesis Stats
-![Incomplete If-Else (2nd Version) Synthesis Stats](incompif2synth.png)
+![Incomplete If-Else (2nd Version) Synthesis Stats](images/incompif2synth.png)
 
 ### Lab 4: Synthesis Result of Lab 3
 
 ### Incomplete If-Else (2nd Version) Netlist
-![Incomplete If-Else (2nd Version) Netlist](incompif2net.png)
+![Incomplete If-Else (2nd Version) Netlist](images/incompif2net.png)
 
 * Still infers a latch because not all conditions assign `y`.
 
@@ -159,10 +159,9 @@ end
 endmodule
 ```
 
-* Synthesizes into a proper **mux** (no latch).
-![Alt text](path/to/image.png)
+### Comparison Case Netlist
+![Comparison Case Netlist](images/compcasenet.png)
 
----
 
 ### Lab 6: Incomplete Case Handling (Bad Case)
 
@@ -181,9 +180,9 @@ endmodule
 
 * **Overlapping case patterns** create unpredictable output.
 ### Bad Case Waveform
-![Bad Case Waveform](badcasewave.png)
+![Bad Case Waveform](images/badcasewave.png)
 ### Bad Case Synthesis
-![Bad Case Synthesis](badcasesynth.png)
+![Bad Case Synthesis](images/badcasesynth.png)
 
 ---
 
@@ -269,11 +268,11 @@ end
 endmodule
 ```
 ### Mux Generate Waveform
-![Mux Generate Waveform](muxgenwave.png)
+![Mux Generate Waveform](images/muxgenwave.png)
 ### Mux Generate Synthesis Stats
-![Mux Generate Synthesis Stats](muxgensynth.png)
+![Mux Generate Synthesis Stats](images/muxgensynth.png)
 ### Mux Generate Netlist
-![Mux Generate Netlist](muxgennet.png)
+![Mux Generate Netlist](images/muxgennet.png)
 
 ---
 
@@ -295,9 +294,9 @@ end
 endmodule
 ```
 ### Demux Case Waveform
-![Demux Case Waveform](demuxcasewave.png)
+![Demux Case Waveform](images/demuxcasewave.png)
 ### Demux Case Netlist
-![Demux Case Netlist](demuxcasenet.png)
+![Demux Case Netlist](images/demuxcasenet.png)
 
 ---
 
