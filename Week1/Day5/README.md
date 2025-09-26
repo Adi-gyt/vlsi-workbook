@@ -108,11 +108,14 @@ always @(*) begin
 end
 endmodule
 ```
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
+### Incomplete If-Else Waveform
+![Incomplete If-Else Waveform](incompif2wave.png)
+### Incomplete If-Else Synthesis Stats
+![Incomplete If-Else Synthesis Stats](incompifsynth.png)
 
 ### Lab 2: Synthesis Result of Lab 1
-![Alt text](path/to/image.png)
+### Incomplete If-Else Netlist
+![Incomplete If-Else Netlist](incompifnet.png)
 
 * Yosys shows a **D-latch** with `i0` as enable.
 
@@ -130,11 +133,13 @@ always @(*) begin
 end
 endmodule
 ```
-![Alt text](path/to/image.png)
+### Incomplete If-Else (2nd Version) Synthesis Stats
+![Incomplete If-Else (2nd Version) Synthesis Stats](incompif2synth.png)
 
 ### Lab 4: Synthesis Result of Lab 3
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
+
+### Incomplete If-Else (2nd Version) Netlist
+![Incomplete If-Else (2nd Version) Netlist](incompif2net.png)
 
 * Still infers a latch because not all conditions assign `y`.
 
@@ -175,8 +180,10 @@ endmodule
 ```
 
 * **Overlapping case patterns** create unpredictable output.
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
+### Bad Case Waveform
+![Bad Case Waveform](badcasewave.png)
+### Bad Case Synthesis
+![Bad Case Synthesis](badcasesynth.png)
 
 ---
 
@@ -195,9 +202,8 @@ endmodule
 ```
 
 * `x` not assigned in `2'b01` branch → latch inferred.
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
-
+### Partial Case Netlist
+![Partial Case Netlist](parcasenet.png)
 ---
 
 ## 4. For Loops in Verilog
@@ -262,8 +268,12 @@ always @(*) begin
 end
 endmodule
 ```
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
+### Mux Generate Waveform
+![Mux Generate Waveform](muxgenwave.png)
+### Mux Generate Synthesis Stats
+![Mux Generate Synthesis Stats](muxgensynth.png)
+### Mux Generate Netlist
+![Mux Generate Netlist](muxgennet.png)
 
 ---
 
@@ -284,28 +294,10 @@ always @(*) begin
 end
 endmodule
 ```
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
-
----
-
-### Lab 12: 8-to-1 Demux Using For Loop
-
-```verilog
-module demux_generate (output o0,o1,o2,o3,o4,o5,o6,o7,input [2:0] sel,input i);
-reg [7:0] y_int;
-assign {o7,o6,o5,o4,o3,o2,o1,o0} = y_int;
-integer k;
-always @(*) begin
-   y_int = 8'b0;
-   for (k=0; k<8; k=k+1)
-      if (k == sel)
-         y_int[k] = i;
-end
-endmodule
-```
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
+### Demux Case Waveform
+![Demux Case Waveform](demuxcasewave.png)
+### Demux Case Netlist
+![Demux Case Netlist](demuxcasenet.png)
 
 ---
 
@@ -332,9 +324,8 @@ module fa (input a,b,c,output co,sum);
    assign {co,sum} = a + b + c;
 endmodule
 ```
-![Alt text](path/to/image.png)
-![Alt text](path/to/image.png)
-
+### RCA Waveform
+![RCA Waveform](rcawave.png)
 ---
 
 ## 8. Best Practices & Summary
