@@ -113,46 +113,6 @@ Download and open in GTKWave: [pre_synth_sim.vcd](./pre_synth_sim.vcd)
 
 ---
 
-
-## 🎵 Example: Audio Signal Generation
-
-To connect everything I learned in Week 2, here’s a simple example of how BabySoC could generate an audio tone.
-
-### Step 1 – Clock and Reset
-![Audio Example – Clock and Reset](./screenshots/audio.png)
-
-- **ref_clk** is the reference input to the PLL.  
-- **pll_locked** goes high once the PLL output is stable.  
-- **sys_clk** becomes the system clock for the CPU.  
-- **resetn** is released only after the PLL locks, so the CPU starts cleanly.
-
-This marks the real “start” of the SoC — once reset is lifted, the CPU begins execution.
-
----
-
-### Step 2 – CPU Program
-The CPU fetches instructions from memory.  
-A small program holds a sine lookup table and writes values to the **DAC register** at a steady rate (~44 kHz).  
-Every write shows up as bus activity (`RV_TO_DAC_bits` changing).
-
----
-
-### Step 3 – DAC Output
-The DAC converts the digital values into a staircase waveform.  
-In GTKWave, this is visible as the analog-formatted `OUT` signal.  
-
----
-
-### Step 4 – Real World Signal
-The staircase waveform is passed through a simple RC filter, which smooths it into a sine wave.  
-When connected to a speaker, this becomes a **pure audio tone**.
-
----
-
-👉 This flow (Clock → Reset → CPU → Bus → DAC → Speaker) ties together all the pieces of BabySoC and shows how digital logic can produce real-world signals.
-
----
-
 ## Common Debugging Notes
 
 * **Empty VCD?** Add `$dumpfile`/`$dumpvars` at top level.
