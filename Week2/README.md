@@ -110,13 +110,13 @@ This shows the whole chain: CPU → bus → DAC → analog.
 
 ## Waveform Screenshots I Collected
 ### Reset + Clock
-![Reset + Clock](./screenshots/reset_clk.png)
+![Reset + Clock](./screenshots/resetclk.png)
 
 ### DAC Output
-![DAC Output](./screenshots/dac_output.png)
+![DAC Output](./screenshots/dac.png)
 
 ### Overview (All signals together)
-![Overview](./screenshots/overview.png)
+![Overview](./screenshots/week2wave.png)
 
 ## Simulation Log
 See the full [sim.log](./sim.log) for the simulation messages.
