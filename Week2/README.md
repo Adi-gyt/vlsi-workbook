@@ -1,83 +1,146 @@
-# Week 2 – BabySoC Fundamentals & Functional Modelling
+# Week 2 — BabySoC Fundamentals & Functional Modelling
 
-## 🌱 My Understanding of SoC (still learning!)
+## Overview
 
-A **System-on-Chip (SoC)** is basically a small computer built into one chip.  
-Instead of having separate CPU, memory, and peripherals as different ICs, an SoC puts everything together.  
+This week I explored **BabySoC**, a minimal RISC-V based System-on-Chip (SoC) that includes a small CPU (RVMYTH), a PLL, and a 10-bit DAC.  
+The goal was to run **pre-synthesis functional simulations** (using Icarus Verilog + GTKWave) and understand how the SoC behaves when software runs on the CPU.
 
-From what I understood:
-- The **CPU** runs instructions (like the “brain”).
-- **Memory** stores the program and variables.
-- The **bus/interconnect** is like a road that carries data and control between blocks.
-- **Peripherals** (GPIO, DAC, UART, etc.) let the chip talk to the outside world.
-- **Reset/Clocking** makes sure the chip starts clean and runs in sync.
-
-I’m still wrapping my head around this, but it feels like SoC = “all the essentials of a computer, but tiny and on-chip.”
+**What I produced:**
+- Notes on theory (this write-up).
+- Simulation logs and `.vcd` waveforms.
+- GTKWave screenshots with short explanations.
 
 ---
 
-## 🍼 Why BabySoC?
+## What is a SoC?
 
-Real SoCs are huge and complex. BabySoC is like a “hello world” version.  
-It has:
-- a small RISC-V CPU core (RVMyth),
-- a PLL to generate a stable clock,
-- and a DAC to produce analog outputs.
-
-What I liked is that it’s simple enough to actually *see signals in GTKWave* without drowning in complexity.  
-It’s basically the training wheels for learning SoC design.
+A **System-on-Chip** basically puts the main parts of a computer—CPU, memory, interconnect, and peripherals—onto a single chip.  
+In real life this makes devices smaller, cheaper, and more efficient. BabySoC is stripped down so that we can actually see how each part works in simulation.
 
 ---
 
-## 🛠️ Functional Modelling (what I learned)
+## Key Blocks in BabySoC
 
-Before going into fancy steps like synthesis or layout, we need to check:  
-**Does the design *functionally* behave the way we expect?**
-
-Functional modelling = run the RTL in a simulator and look at the waveforms.  
-
-My takeaways:
-- I used **Icarus Verilog** to compile and simulate.
-- Then used **GTKWave** to open the `.vcd` file.
-- At first, my dump file was empty (forgot `$dumpfile` + `$dumpvars`). Once I fixed that, I saw all the signals.
-- This step is important because it shows early whether reset, clocks, and CPU program flow are wired correctly.
+## BabySoC Block Diagram
+![BabySoC Block Diagram](./diagrams/babysoc_block.png)
+- **RVMYTH CPU** — executes instructions.  
+- **Memory** — small ROM/RAM for instructions and data.  
+- **Bus** — connects CPU to peripherals with simple handshakes.  
+- **DAC (10-bit)** — memory-mapped peripheral that converts digital values into analog output.  
+- **PLL** — gives a stable system clock.  
+- **Reset logic** — makes sure the CPU starts cleanly.  
 
 ---
 
-## 🎵 Example I Understood – Audio Tone with BabySoC
+## Why It’s a Good Teaching Model
 
-One cool example I came across was making an audio tone:
-
-1. PLL locks → gives stable clock.
-2. CPU starts running from reset address.
-3. A program writes sine values (from a lookup table) into the **DAC register** one by one.
-4. DAC converts those digital values into voltage steps.
-5. With a filter + speaker, it becomes an audible tone!
-
-This clicked for me because it shows the whole flow: **clock → CPU → bus → DAC → real-world output**.
+- Simple enough to follow, but still a real SoC.  
+- Every important signal (reset, clock, PC, bus, DAC) is visible in waveforms.  
+- Simulations run fast so iteration is quick.  
+- Shows the link between **software instructions → hardware signals → real output** (like sound).
 
 ---
 
-## 📸 Waveforms (what I checked in GTKWave)
+## Functional Modelling (Before Synthesis)
 
-I still don’t know all the signals, but here’s what I tried to capture:
-- **Reset sequence**: chip goes from reset → normal run.
-- **Clock**: PLL clock looks stable after lock.
-- **CPU program counter**: increments as instructions run.
-- **DAC bus write**: CPU writing values to DAC register.
-- **DAC output**: saw the staircase waveform (looked like a rough sine).
+## Functional Modelling Flow
+![Functional Modelling](./diagrams/functional_modelling.png)
+The idea here is to check if the design works functionally before worrying about timing or gates.
 
-*(Screenshots go here once I save them!)*
+**Benefits:**
+- Find design bugs early.  
+- Quick turnaround compared to gate-level sims.  
+- Lets me see how code running on the CPU drives hardware.  
+
+**Tools I used:**
+- `iverilog` + `vvp` for simulation.  
+- `gtkwave` for waveform viewing.  
 
 ---
 
-## 🚀 What I Learned This Week
+## Example: Making an Audio Tone
 
-- An SoC = CPU + memory + bus + peripherals all on one chip.  
-- BabySoC is a tiny but clear model to practice on.  
-- Functional modelling is about simulating behavior before touching synthesis.  
-- Learned to use `$dumpfile` / `$dumpvars` to get `.vcd`.  
-- First time I saw analog + digital signals together in GTKWave — that was really cool.  
-- The idea of writing to a DAC register and hearing sound made it all feel “real.”
+One nice way to tie this all together is with a small tone generator program:
+
+1. **Clock & Reset** → PLL locks, reset releases.  
+2. **CPU starts** → fetches from boot address.  
+3. **Program** → loops through a sine lookup table, writing values to the DAC register ~44 kHz.  
+4. **Bus activity** → CPU issues writes, bus handshakes ensure they go through.  
+5. **DAC output** → digital values → staircase analog voltage.  
+6. **Filter & sound** → RC filter smooths it to a sine wave, speaker outputs a tone.  
+
+This shows the whole chain: CPU → bus → DAC → analog.
+
+---
+
+## Simulation Flow (What I Did)
+
+1. Installed/used `iverilog`, `vvp`, `gtkwave`.  
+2. Compiled top-level modules (`vsdbabysoc.v`, `rvmyth`, `avsddac`, `avsdpll`, `testbench.v`).  
+3. Made sure `$dumpfile` and `$dumpvars` were in the testbench:  
+
+   ```verilog
+   initial begin
+     $dumpfile("pre_synth_sim.vcd");
+     $dumpvars(0, testbench);
+   end
+   ```
+
+4. Ran:
+
+   ```bash
+   iverilog -I src/include -o build/pre_synth_sim.out \
+     src/module/testbench.v \
+     src/module/vsdbabysoc.v \
+     src/module/rvmyth_avsddac_stripped.v \
+     src/module/avsddac.v \
+     src/module/avsdpll.v
+
+   vvp build/pre_synth_sim.out | tee build/sim_log.txt
+   ```
+
+5. Opened the VCD in GTKWave and looked at:
+
+   * `clk`, `pll_locked`, `reset`
+   * `pc`, `instr`
+   * `addr`, `we`, `wdata`, `valid`, `ready`
+   * `RV_TO_DAC_bits`, `OUT`
+
+---
+
+## Waveform Screenshots I Collected
+### Reset + Clock
+![Reset + Clock](./screenshots/reset_clk.png)
+
+### DAC Output
+![DAC Output](./screenshots/dac_output.png)
+
+### Overview (All signals together)
+![Overview](./screenshots/overview.png)
+
+## Simulation Log
+See the full [sim.log](./sim.log) for the simulation messages.
+
+## Waveform File
+Download and open in GTKWave: [pre_synth_sim.vcd](./pre_synth_sim.vcd)
+
+---
+
+## Common Debugging Notes
+
+* **Empty VCD?** Add `$dumpfile`/`$dumpvars` at top level.
+* **Duplicate modules?** Check for multiple includes.
+* **Port mismatch?** Double-check top-level connections.
+* **DAC flat output?** Likely CPU isn’t running → check reset & PC signals.
+
+---
+
+## Takeaways
+
+* Understood how a simple RISC-V SoC ties CPU, PLL, DAC, and bus together.
+* Learned why functional modelling is important before synthesis.
+* Practiced running a full simulation → logs → VCD → waveforms.
+* Got comfortable debugging common testbench issues.
+* Saw how software (lookup table + timer) directly creates hardware output (DAC writes → sound).
 
 ---
