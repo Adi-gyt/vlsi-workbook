@@ -22,7 +22,7 @@ In real life this makes devices smaller, cheaper, and more efficient. BabySoC is
 ## Key Blocks in BabySoC
 
 ## BabySoC Block Diagram
-![BabySoC Block Diagram](./diagrams/babysoc_block.png)
+![BabySoC Block Diagram](./screenshots/babysoc_block.png)
 - **RVMYTH CPU** — executes instructions.  
 - **Memory** — small ROM/RAM for instructions and data.  
 - **Bus** — connects CPU to peripherals with simple handshakes.  
@@ -44,7 +44,7 @@ In real life this makes devices smaller, cheaper, and more efficient. BabySoC is
 ## Functional Modelling (Before Synthesis)
 
 ## Functional Modelling Flow
-![Functional Modelling](./diagrams/functional_modelling.png)
+![Functional Modelling](./screenshots/functional_modelling.png)
 The idea here is to check if the design works functionally before worrying about timing or gates.
 
 **Benefits:**
