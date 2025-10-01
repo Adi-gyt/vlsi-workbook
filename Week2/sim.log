@@ -1,0 +1,4 @@
+VCD info: dumpfile pre_synth_sim.vcd opened for output.
+VCD warning: ignoring signals in previously scanned scope testbench.uut.dac.
+Simulation finished
+src/module/testbench.v:41: $finish called at 200100000 (1ps)
